@@ -17,4 +17,6 @@ public interface ICategoryService {
   ServerResponse updateCateGoryName(Integer categoryId, String categoryName);
 
   ServerResponse<List<Category>> getChildrenParallelCategory(Integer parentId);
+
+  ServerResponse selectCategoryAndChildrenById(Integer catagoryId);
 }

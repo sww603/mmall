@@ -1,10 +1,15 @@
 package com.mmall.service.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.CategoryMapper;
 import com.mmall.pojo.Category;
 import com.mmall.service.ICategoryService;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -61,6 +66,28 @@ public class ICategoryServiceImpl implements ICategoryService {
     return ServerResponse.createBySuccess(categoryList);
   }
 
-  //public ServerResponse selectCategoryAnd
+  public ServerResponse selectCategoryAndChildrenById(Integer catagoryId) {
+    HashSet<Category> categorySet = Sets.newHashSet();
+    findChildCategoy(categorySet, catagoryId);
 
+    ArrayList<Integer> categoryList = Lists.newArrayList();
+    if (catagoryId != null) {
+      for (Category categoryItem : categorySet) {
+        categoryList.add(categoryItem.getId());
+      }
+    }
+    return ServerResponse.createBySuccess(categoryList);
+  }
+
+  private Set<Category> findChildCategoy(Set<Category> categorySet, Integer categoryId) {
+    Category category = categoryMapper.selectByPrimaryKey(categoryId);
+    if (category != null) {
+      categorySet.add(category);
+    }
+    List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
+    for (Category categoryItem : categoryList) {
+      findChildCategoy(categorySet, categoryItem.getId());
+    }
+    return categorySet;
+  }
 }

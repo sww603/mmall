@@ -6,14 +6,12 @@ import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.ICategoryService;
 import com.mmall.service.IUserService;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamWriterFactory.Default;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.management.snmp.AdaptorBootstrap.DefaultValues;
 
 /**
  * Created by sww_6 on 2018/7/19.
@@ -75,9 +73,6 @@ public class CategoryManageController {
 
   /**
    * 查询当前节点的id和递归子节点的id
-   * @param session
-   * @param parentId
-   * @return
    */
   @RequestMapping("get_deep_catagory.do")
   @ResponseBody
@@ -88,7 +83,7 @@ public class CategoryManageController {
       return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录！");
     }
     if (userService.checkAdminRole(user).isSuccess()) {
-      return iCategoryService.getChildrenParallelCategory(parentId);
+      return iCategoryService.selectCategoryAndChildrenById(parentId);
     } else {
       return ServerResponse.createByErrorMessage("无权限操作，需要管理员操作！");
     }
