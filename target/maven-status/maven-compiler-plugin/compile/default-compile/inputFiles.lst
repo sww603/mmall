@@ -1,8 +1,11 @@
 D:\githup\mmall\src\main\java\com\mmall\pojo\Cart.java
+D:\githup\mmall\src\main\java\com\mmall\service\impl\ProductServiceImpl.java
 D:\githup\mmall\src\main\java\com\mmall\common\Const.java
 D:\githup\mmall\src\main\java\com\mmall\dao\CategoryMapper.java
 D:\githup\mmall\src\main\java\com\mmall\dao\OrderItemMapper.java
 D:\githup\mmall\src\main\java\com\mmall\pojo\OrderItem.java
+D:\githup\mmall\src\main\java\com\mmall\service\ProductService.java
+D:\githup\mmall\src\main\java\com\mmall\controller\backend\ProductManagerController.java
 D:\githup\mmall\src\main\java\com\mmall\dao\PayInfoMapper.java
 D:\githup\mmall\src\main\java\com\mmall\service\impl\UserServiceImpl.java
 D:\githup\mmall\src\main\java\com\mmall\pojo\Category.java
