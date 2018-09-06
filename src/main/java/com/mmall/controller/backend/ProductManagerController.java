@@ -52,4 +52,22 @@ public class ProductManagerController {
       return ServerResponse.createByErrorMessage("无权限操作！");
     }
   }
+
+  /**
+   * 获取商品详情
+   */
+  @RequestMapping("detail.do")
+  @ResponseBody
+  public ServerResponse detsil(HttpSession session, Integer productId) {
+    User user = (User) session.getAttribute(Const.CURRENT_USER);
+    if (user == null) {
+      ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请先登录管理员！");
+    }
+    if (iUserService.checkAdminRole(user).isSuccess()) {
+      return null;
+      //return productService.setSaleStatus(productId, status);
+    } else {
+      return ServerResponse.createByErrorMessage("无权限操作！");
+    }
+  }
 }
