@@ -9,4 +9,6 @@ import com.mmall.pojo.Product;
 public interface ProductService {
 
   ServerResponse saveOrUpdateProduct(Product product);
+
+  ServerResponse<String> setSaleStatus(Integer productId, Integer status);
 }
