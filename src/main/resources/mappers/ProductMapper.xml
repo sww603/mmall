@@ -186,7 +186,7 @@
   </select>
 
 
-  <select id="selectByNameAndProductId" resultMap="BaseResultMap" parameterType="map">
+  <!--<select id="selectByNameAndProductId" resultMap="BaseResultMap" parameterType="map">
     SELECT
     <include refid="Base_Column_List"/>
     from mmall_product
@@ -199,8 +199,8 @@
       </if>
     </where>
   </select>
-  
-  <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+  -->
+  <!--<select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
     SELECT
     <include refid="Base_Column_List"></include>
     from mmall_product
@@ -214,6 +214,11 @@
         #{item}
       </foreach>
     </if>
-  </select>
-
+  </select>-->
+<!--  <select id="selectList" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    from mmall_product
+    ORDER BY id asc
+  </select>-->
 </mapper>
