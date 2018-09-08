@@ -1,6 +1,7 @@
 package com.mmall.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -13,7 +14,6 @@ import com.mmall.util.DateTimeUtil;
 import com.mmall.util.PropertiesUtil;
 import com.mmall.vo.ProductDetailVo;
 import com.mmall.vo.ProductListVo;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +85,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public ServerResponse getProductList(int pageNum, int pageSize) {
+  public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize) {
     PageHelper.startPage(pageNum, pageSize);
     List<Product> products = productMapper.selectList();
     List<ProductListVo> productList = Lists.newArrayList();
@@ -93,7 +93,22 @@ public class ProductServiceImpl implements ProductService {
       ProductListVo productListVo = assembleProductListVo(productItem);
       productList.add(productListVo);
     }
-    return ServerResponse.createBySuccess(productList);
+    PageInfo pageInfo=new PageInfo();
+    pageInfo.setList(productList);
+    return ServerResponse.createBySuccess(pageInfo);
+  }
+
+  @Override
+  public ServerResponse<PageInfo> searchProduct(String productName, Integer productId,
+      Integer pageNum, Integer pageSize) {
+    PageHelper.startPage(pageNum, pageSize);
+    if (StringUtils.isNotBlank(productName)) {
+      productName = new StringBuffer().append("%").append(productName).append("%").toString();
+    }
+    List<Product> productList = productMapper.selectByNameAndProductId(productName, productId);
+    PageInfo pageInfo=new PageInfo();
+    pageInfo.setList(productList);
+    return ServerResponse.createBySuccess(pageInfo);
   }
 
   private ProductListVo assembleProductListVo(Product product) {
