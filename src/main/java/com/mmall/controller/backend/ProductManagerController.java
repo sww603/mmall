@@ -5,14 +5,18 @@ import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.Product;
 import com.mmall.pojo.User;
+import com.mmall.service.FileService;
 import com.mmall.service.IUserService;
 import com.mmall.service.ProductService;
+import com.mmall.util.PropertiesUtil;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by sww_6 on 2018/9/6.
@@ -25,6 +29,8 @@ public class ProductManagerController {
   private IUserService iUserService;
   @Autowired
   private ProductService productService;
+  @Autowired
+  private FileService fileService;
 
   @RequestMapping("save.do")
   @ResponseBody
@@ -90,6 +96,9 @@ public class ProductManagerController {
     }
   }
 
+  /**
+   * 搜索商品信息
+   */
   @RequestMapping("search.do")
   @ResponseBody
   public ServerResponse searchProduct(HttpSession session, String productName,
@@ -104,5 +113,14 @@ public class ProductManagerController {
     } else {
       return ServerResponse.createByErrorMessage("无权限操作！");
     }
+  }
+
+  @RequestMapping("upload.do")
+  @ResponseBody
+  public ServerResponse upload(MultipartFile file, HttpServletRequest request) {
+    String path = request.getSession().getServletContext().getRealPath("upload");
+    String upload = fileService.upload(file, path);
+    String stringUrl = PropertiesUtil.getProperty("");
+    return null;
   }
 }
