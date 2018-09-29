@@ -4,12 +4,15 @@ import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
+import com.mmall.pojo.Ftp;
 import com.mmall.pojo.Product;
 import com.mmall.pojo.User;
 import com.mmall.service.FileService;
 import com.mmall.service.IUserService;
 import com.mmall.service.ProductService;
+import com.mmall.util.FtpUtils;
 import com.mmall.util.PropertiesUtil;
+import java.io.File;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,41 +144,30 @@ public class ProductManagerController {
   @RequestMapping("richtext_img_upload.do")
   @ResponseBody
   public Map richtextImgUpload(HttpSession session,
-      @RequestParam(value = "upload_file", required = false) MultipartFile file,
+      @RequestParam(value = "upload_files", required = false) MultipartFile files,
       HttpServletRequest request, HttpServletResponse response) {
+    String name = files.getName();
     Map resultMap = Maps.newHashMap();
     log.info(resultMap.toString());
     User user = (User) session.getAttribute(Const.CURRENT_USER);
-      /* if (user == null) {
-            resultMap.put("success", false);
-            resultMap.put("msg", "请登录管理员");
-            return resultMap;
-        }*/
-    //富文本中对于返回值有自己的要求,我们使用是simditor所以按照simditor的要求进行返回
-//        {
-//            "success": true/false,
-//                "msg": "error message", # optional
-//            "file_path": "[real file path]"
-//        }
-    //if (iUserService.checkAdminRole(user).isSuccess()) {
-    String path = request.getSession().getServletContext().getRealPath("hahaha");
-    String targetFileName = fileService.upload(file, path);
-    if (StringUtils.isBlank(targetFileName)) {
-      resultMap.put("success", false);
-      resultMap.put("msg", "上传失败");
-      return resultMap;
-
+    Ftp f = new Ftp();
+    f.setIpAddr("39.106.140.104");
+    f.setUserName("test");
+    f.setPwd("test");
+    f.setPath("/home/test/sww/");
+    f.setPort(21);
+    try {
+      FtpUtils.connectFtp(f);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFileName;
-    resultMap.put("success", true);
-    resultMap.put("msg", "上传成功");
-    resultMap.put("file_path", url);
-    response.addHeader("Access-Control-Allow-Headers", "X-File-Name");
+    File file = new File(request.getSession().getServletContext().getRealPath("upload"));
+    try {
+      FtpUtils.upload(file);//把文件上传在ftp上
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    System.out.println("上传文件完成。。。。");
     return resultMap;
-        /*} else {
-            resultMap.put("success", false);
-            resultMap.put("msg", "无权限操作");
-            return resultMap;
-        }*/
   }
 }
