@@ -1,41 +1,40 @@
 package com.mmall.util;
-
-import com.mmall.pojo.Ftp;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 /**
  * Created by sww_6 on 2018/9/27.
  */
 public class FtpUtils {
   private static FTPClient ftp;
+
+  private static String ftpIp = PropertiesUtil.getProperty("ftp.server.ip");
+  private static String ftpUser = PropertiesUtil.getProperty("ftp.user");
+  private static String ftpPass = PropertiesUtil.getProperty("ftp.pass");
+  private static String ftpPath = PropertiesUtil.getProperty("ftp.pass.remotePath");
   /**
    * 获取ftp连接
-   *
-   * @param f
    * @return
    * @throws Exception
    */
-  public static boolean connectFtp(Ftp f) throws Exception {
+  public static boolean connectFtp() throws Exception {
     ftp = new FTPClient();
+
     boolean flag = false;
     int reply;
-    if (f.getPort() == null) {
-      ftp.connect(f.getIpAddr(), 21);
-    } else {
-      ftp.connect(f.getIpAddr(), f.getPort());
-    }
-    ftp.login(f.getUserName(), f.getPwd());
+      ftp.connect(ftpIp, 21);
+
+    ftp.login(ftpUser, ftpPass);
     ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
     reply = ftp.getReplyCode();
     if (!FTPReply.isPositiveCompletion(reply)) {
       ftp.disconnect();
       return flag;
     }
-    ftp.changeWorkingDirectory(f.getPath());
+    ftp.changeWorkingDirectory(ftpPath);
     flag = true;
     return flag;
   }
@@ -83,5 +82,5 @@ public class FtpUtils {
       ftp.storeFile(file2.getName(), input);
       input.close();
     }
-}
+  }
 }

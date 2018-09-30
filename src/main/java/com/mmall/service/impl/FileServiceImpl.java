@@ -1,11 +1,8 @@
 package com.mmall.service.impl;
 
-import com.google.common.collect.Lists;
 import com.mmall.service.FileService;
-import com.mmall.util.FTPUtil;
 import com.mmall.util.FtpUtils;
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,22 +31,14 @@ public class FileServiceImpl implements FileService {
     }
     File targetFile = new File(path,uploadFileName);
 
-
     try {
       file.transferTo(targetFile);
-      //文件已经上传成功了
 
-      //FtpUtils.upload(targetFile);
-      //FTPUtil.uploadFile(Lists.newArrayList(targetFile));
-      //已经上传到ftp服务器上
-
-      targetFile.delete();
-    } catch (IOException e) {
-      log.error("上传文件异常",e);
-      return null;
+      FtpUtils.upload(targetFile);//把文件上传在ftp上
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    //A:abc.jpg
-    //B:abc.jpg
     return targetFile.getName();
+
   }
 }

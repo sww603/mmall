@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
-import com.mmall.pojo.Ftp;
 import com.mmall.pojo.Product;
 import com.mmall.pojo.User;
 import com.mmall.service.FileService;
@@ -12,7 +11,6 @@ import com.mmall.service.IUserService;
 import com.mmall.service.ProductService;
 import com.mmall.util.FtpUtils;
 import com.mmall.util.PropertiesUtil;
-import java.io.File;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -126,19 +124,31 @@ public class ProductManagerController {
 
   @RequestMapping("upload.do")
   @ResponseBody
-  public ServerResponse upload(HttpSession session,
+  public Map upload(HttpSession session,
       @RequestParam(value = "upload_file", required = false) MultipartFile file,
-      HttpServletRequest request) {
-    User user = (User) session.getAttribute(Const.CURRENT_USER);
-
+      HttpServletRequest request, HttpServletResponse response) {
+    Map resultMap = Maps.newHashMap();
+    log.info(resultMap.toString());
+    try {
+      FtpUtils.connectFtp();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     String path = request.getSession().getServletContext().getRealPath("upload");
-    String targetFileName = fileService.upload(file, path);
-    String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFileName;
 
-    Map fileMap = Maps.newHashMap();
-    fileMap.put("uri", targetFileName);
-    fileMap.put("url", url);
-    return ServerResponse.createBySuccess(fileMap);
+    String targetFileName = fileService.upload(file, path);
+    if (StringUtils.isBlank(targetFileName)) {
+      resultMap.put("success", false);
+      resultMap.put("msg", "上传失败");
+      return resultMap;
+    }
+    String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFileName;
+    resultMap.put("success", true);
+    resultMap.put("msg", "上传成功");
+    resultMap.put("file_path", url);
+    response.addHeader("Access-Control-Allow-Headers", "X-File-Name");
+    System.out.println("上传文件完成。。。。");
+    return resultMap;
   }
 
   @RequestMapping("richtext_img_upload.do")
@@ -146,27 +156,26 @@ public class ProductManagerController {
   public Map richtextImgUpload(HttpSession session,
       @RequestParam(value = "upload_files", required = false) MultipartFile files,
       HttpServletRequest request, HttpServletResponse response) {
-    String name = files.getName();
     Map resultMap = Maps.newHashMap();
     log.info(resultMap.toString());
-    User user = (User) session.getAttribute(Const.CURRENT_USER);
-    Ftp f = new Ftp();
-    f.setIpAddr("39.106.140.104");
-    f.setUserName("test");
-    f.setPwd("test");
-    f.setPath("/home/test/sww/");
-    f.setPort(21);
     try {
-      FtpUtils.connectFtp(f);
+      FtpUtils.connectFtp();
     } catch (Exception e) {
       e.printStackTrace();
     }
-    File file = new File(request.getSession().getServletContext().getRealPath("upload"));
-    try {
-      FtpUtils.upload(file);//把文件上传在ftp上
-    } catch (Exception e) {
-      e.printStackTrace();
+    String path = request.getSession().getServletContext().getRealPath("upload");
+
+    String targetFileName = fileService.upload(files, path);
+    if (StringUtils.isBlank(targetFileName)) {
+      resultMap.put("success", false);
+      resultMap.put("msg", "上传失败");
+      return resultMap;
     }
+    String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFileName;
+    resultMap.put("success", true);
+    resultMap.put("msg", "上传成功");
+    resultMap.put("file_path", url);
+    response.addHeader("Access-Control-Allow-Headers", "X-File-Name");
     System.out.println("上传文件完成。。。。");
     return resultMap;
   }
