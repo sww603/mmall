@@ -10,6 +10,7 @@ import com.mmall.vo.CartProductVo;
 import com.mmall.vo.CartVo;
 import java.math.BigDecimal;
 import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,10 +43,27 @@ public class CartServiceImpl implements ICartService {
 
   private CartVo cart(Integer userId) {
     CartVo cartVo = new CartVo();
-    List<Cart> carts = cartMapper.selectCartByUserId(userId);
+    List<Cart> cartLists = cartMapper.selectCartByUserId(userId);
 
     List<CartProductVo> cartProductVos = Lists.newArrayList();
     BigDecimal cartTotalPrice = new BigDecimal("0");
+
+    if (CollectionUtils.isNotEmpty(cartLists)) {
+      for (Cart cartItem : cartLists) {
+        CartProductVo cartProductVo = new CartProductVo();
+        cartProductVo.setId();
+        cartProductVo.setLimitQuantity();
+        cartProductVo.setProductChecked();
+        cartProductVo.setProductId();
+        cartProductVo.setProductName();
+        cartProductVo.setProductPrice();
+        cartProductVo.setProductStatus();
+        cartProductVo.setProductStock();
+        cartProductVo.setProductSubTitle();
+        cartProductVo.setProductTotalPrice();
+        cartProductVo.setQuantity();
+      }
+    }
     return cartVo;
   }
 }
