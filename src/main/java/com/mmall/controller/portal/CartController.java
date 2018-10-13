@@ -32,7 +32,9 @@ public class CartController {
           .createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
     }
     return iCartService.add(userId, productId, count);
-  } @RequestMapping("update.do")
+  }
+
+  @RequestMapping("update.do")
   @ResponseBody
   private ServerResponse update(HttpSession session, Integer userId, Integer productId,
       Integer count) {
@@ -41,9 +43,18 @@ public class CartController {
       return ServerResponse
           .createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
     }
-    return iCartService.add(userId, productId, count);
+    return iCartService.update(userId, productId, count);
   }
 
-
-
+  @RequestMapping("delect.do")
+  @ResponseBody
+  private ServerResponse delect(HttpSession session, Integer userId, String productIds,
+      Integer count) {
+    User attribute = (User) session.getAttribute(Const.CURRENT_USER);
+    if (null != attribute) {
+      return ServerResponse
+          .createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
+    }
+    return iCartService.delectProduct(userId, productIds);
+  }
 }

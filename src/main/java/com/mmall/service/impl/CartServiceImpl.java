@@ -1,5 +1,6 @@
 package com.mmall.service.impl;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.mmall.common.Const;
 import com.mmall.common.Const.cart;
@@ -16,6 +17,7 @@ import com.mmall.vo.CartProductVo;
 import com.mmall.vo.CartVo;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.swing.Spring;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,19 @@ public class CartServiceImpl implements ICartService {
       cart.setQuantity(count);
     }
     cartMapper.updateByPrimaryKeySelective(cart);
+    CartVo cartVoLimit = this.getCartVoLimit(userId);
+    return ServerResponse.createBySuccess(cartVoLimit);
+  }
+
+  @Override
+  public ServerResponse<CartVo> delectProduct(Integer userId, String productIds) {
+    List<String> productList = Splitter.on(",").splitToList(productIds);
+
+    if (CollectionUtils.isEmpty(productList)) {
+      return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
+          ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+    }
+    cartMapper.deleteByUserIdProductIds(userId, productList);
     CartVo cartVoLimit = this.getCartVoLimit(userId);
     return ServerResponse.createBySuccess(cartVoLimit);
   }
