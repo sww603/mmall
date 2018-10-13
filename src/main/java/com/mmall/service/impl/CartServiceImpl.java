@@ -3,6 +3,7 @@ package com.mmall.service.impl;
 import com.google.common.collect.Lists;
 import com.mmall.common.Const;
 import com.mmall.common.Const.cart;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.CartMapper;
 import com.mmall.dao.ProductMapper;
@@ -46,6 +47,21 @@ public class CartServiceImpl implements ICartService {
       cartMapper.updateByPrimaryKeySelective(cart);
     }
     return this.list(userId);
+  }
+
+  @Override
+  public ServerResponse<CartVo> update(Integer userId, Integer productId, Integer count) {
+    if (productId == null || count == null) {
+      return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
+          ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+    }
+    Cart cart = cartMapper.selectCartByUserIdProductId(userId, productId);
+    if (null != cart) {
+      cart.setQuantity(count);
+    }
+    cartMapper.updateByPrimaryKeySelective(cart);
+    CartVo cartVoLimit = this.getCartVoLimit(userId);
+    return ServerResponse.createBySuccess(cartVoLimit);
   }
 
   @Override
