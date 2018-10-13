@@ -45,10 +45,16 @@ public class CartServiceImpl implements ICartService {
       cart.setQuantity(count);
       cartMapper.updateByPrimaryKeySelective(cart);
     }
-    return null;
+    return this.list(userId);
   }
 
-  private CartVo cart(Integer userId) {
+  @Override
+  public ServerResponse list(Integer userId) {
+    CartVo cartVo = this.getCartVoLimit(userId);
+    return ServerResponse.createBySuccess(cartVo);
+  }
+
+  private CartVo getCartVoLimit(Integer userId) {
     CartVo cartVo = new CartVo();
     List<Cart> cartLists = cartMapper.selectCartByUserId(userId);
 
@@ -65,7 +71,7 @@ public class CartServiceImpl implements ICartService {
         cartProductVo.setQuantity(cartItem.getQuantity());
         Product product = productMapper.selectByPrimaryKey(cartItem.getProductId());
 
-        if (product != null){
+        if (product != null) {
           cartProductVo.setProductMainImage(product.getMainImage());
           cartProductVo.setProductName(product.getName());
           cartProductVo.setProductPrice(product.getPrice());
@@ -93,7 +99,7 @@ public class CartServiceImpl implements ICartService {
           cartProductVo.setProductChecked(cartItem.getChecked());
         }
 
-        if (cartItem.getChecked()== cart.CHENCKED){
+        if (cartItem.getChecked() == cart.CHENCKED) {
           cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(),
               cartProductVo.getProductTotalPrice().doubleValue());
         }
