@@ -5,7 +5,6 @@ import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.ICartService;
-import java.math.BigDecimal;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,29 @@ public class CartController {
 
   @Autowired
   private ICartService iCartService;
+
+  @RequestMapping("select.do")
+  @ResponseBody
+  private ServerResponse select(HttpSession session, Integer userId) {
+    User attribute = (User) session.getAttribute(Const.CURRENT_USER);
+    if (null != attribute) {
+      return ServerResponse
+          .createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
+    }
+    return iCartService.list(userId);
+  }
+
+  @RequestMapping("selectAll.do")
+  @ResponseBody
+  private ServerResponse selectAll(HttpSession session, Integer userId, Integer productId,
+      Integer chcked) {
+    User attribute = (User) session.getAttribute(Const.CURRENT_USER);
+    if (null != attribute) {
+      return ServerResponse
+          .createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
+    }
+    return iCartService.selectOrselectAll(userId, productId, chcked);
+  }
 
   @RequestMapping("add.do")
   @ResponseBody

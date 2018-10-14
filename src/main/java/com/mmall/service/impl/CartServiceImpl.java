@@ -17,7 +17,6 @@ import com.mmall.vo.CartProductVo;
 import com.mmall.vo.CartVo;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.swing.Spring;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,6 +82,14 @@ public class CartServiceImpl implements ICartService {
   public ServerResponse list(Integer userId) {
     CartVo cartVo = this.getCartVoLimit(userId);
     return ServerResponse.createBySuccess(cartVo);
+  }
+
+  @Override
+  public ServerResponse<CartVo> selectOrselectAll(Integer userId, Integer productId,
+      Integer chcked) {
+    cartMapper.checkedOrUncheckedProduct(userId, productId, chcked);
+    ServerResponse list = this.list(userId);
+    return list;
   }
 
   private CartVo getCartVoLimit(Integer userId) {
