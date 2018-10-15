@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
+import com.mmall.dao.UserMapper;
 import com.mmall.pojo.Product;
 import com.mmall.pojo.User;
 import com.mmall.service.FileService;
@@ -38,6 +39,8 @@ public class ProductManagerController {
   private ProductService productService;
   @Autowired
   private FileService fileService;
+  @Autowired
+  private UserMapper userMapper;
 
   @RequestMapping("save.do")
   @ResponseBody
@@ -87,7 +90,7 @@ public class ProductManagerController {
   /**
    * 获取商品列表
    */
-  @RequestMapping("productList.do")
+  @RequestMapping("list.do")
   @ResponseBody
   public ServerResponse productList(HttpSession session,
       @RequestParam(value = "pageSize", defaultValue = "1") int pageSize,

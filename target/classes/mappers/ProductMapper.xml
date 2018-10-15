@@ -199,7 +199,7 @@
       </if>
     </where>
   </select>
-  <!--<select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+  <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
     SELECT
     <include refid="Base_Column_List"></include>
     from mmall_product
@@ -213,7 +213,7 @@
         #{item}
       </foreach>
     </if>
-  </select>-->
+  </select>
 <!--  <select id="selectList" resultMap="BaseResultMap" >
     SELECT
     <include refid="Base_Column_List"/>
