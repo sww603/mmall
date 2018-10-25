@@ -1,7 +1,9 @@
 package com.mmall.pojo;
 
 import java.util.Date;
+import org.aspectj.lang.annotation.Aspect;
 
+@Aspect
 public class Cart {
     private Integer id;
 

@@ -1,17 +1,17 @@
 <component name="libraryTable">
   <library name="Maven: aopalliance:aopalliance:1.0">
     <CLASSES>
-      <root url="jar://D:/新建文件夹/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/alipay-sdk-java-3.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/alipay-trade-sdk-20161215.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/新建文件夹/repository/aopalliance/aopalliance/1.0/aopalliance-1.0-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/alipay-sdk-java-3.3.0-source.jar!/" />
       <root url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/alipay-trade-sdk-20161215-source.jar!/" />
-      <root url="jar://D:/新建文件夹/repository/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
