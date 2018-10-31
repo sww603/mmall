@@ -19,7 +19,7 @@ public class PropertiesUtils {
     props = new Properties();
     try {
       props.load(
-          new InputStreamReader(PropertiesUtil.class.getResourceAsStream("fileName"), "UTF-8"));
+          new InputStreamReader(PropertiesUtils.class.getResourceAsStream("fileName"), "UTF-8"));
     } catch (IOException e) {
       log.error("配置文件异常！", e);
     }

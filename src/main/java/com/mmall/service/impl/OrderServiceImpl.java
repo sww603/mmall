@@ -32,10 +32,10 @@ import com.mmall.util.BigDecimalUtil;
 import com.mmall.util.DateTimeUtil;
 import com.mmall.util.FTPUtil;
 import com.mmall.util.PropertiesUtil;
+import com.mmall.util.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.mapping.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -135,7 +135,7 @@ public class OrderServiceImpl implements IOrderService {
         .setOperatorId(operatorId).setStoreId(storeId).setExtendParams(extendParams)
         .setTimeoutExpress(timeoutExpress)
         .setNotifyUrl(
-            PropertiesUtil.getProperty("alipay.callback.url"))//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
+            PropertiesUtils.getProperties("alipay.callback.url"))//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
         .setGoodsDetailList(goodsDetailList);
 
     // 支付宝当面付2.0服务

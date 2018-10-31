@@ -11,7 +11,7 @@ import com.mmall.service.FileService;
 import com.mmall.service.IUserService;
 import com.mmall.service.ProductService;
 import com.mmall.util.FtpUtils;
-import com.mmall.util.PropertiesUtil;
+import com.mmall.util.PropertiesUtils;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -145,7 +145,7 @@ public class ProductManagerController {
       resultMap.put("msg", "上传失败");
       return resultMap;
     }
-    String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFileName;
+    String url = PropertiesUtils.getProperties("ftp.server.http.prefix") + targetFileName;
     resultMap.put("success", true);
     resultMap.put("msg", "上传成功");
     resultMap.put("file_path", url);
@@ -174,7 +174,7 @@ public class ProductManagerController {
       resultMap.put("msg", "上传失败");
       return resultMap;
     }
-    String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFileName;
+    String url = PropertiesUtils.getProperties("ftp.server.http.prefix") + targetFileName;
     resultMap.put("success", true);
     resultMap.put("msg", "上传成功");
     resultMap.put("file_path", url);
